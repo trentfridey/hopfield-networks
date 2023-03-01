@@ -2,7 +2,7 @@
 
 This is an implementation of a **Hopfield network**, a simple model of associative memory. When given a pattern, it will recall a similar pattern from its set of memorized patterns.
 
-A Hopfield network consists of $I$ neurons, with the value of the $i$th neuron denoted as $x_i \in \{0,1\}$.
+A Hopfield network consists of $I$ neurons, with the value of the $i^{th}$ neuron denoted as $x_i \in \{-1,1\}$.
 The neurons are fully connected, and the strength of the connection between neuron $i$ and $j$ is quantified through the weight matrix $w_{ij}$.
 The value of the neurons and the weight matrix determines the _state_ of the network.
 
