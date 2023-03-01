@@ -32,3 +32,9 @@ y_{i}^{(n)} = \frac{1}{1+\exp \left(-\sum_j w_{ij}x_j^{(n)}\right)}
 $$
 
 The minimization is done in `train.ts` via gradient descent.
+
+-----
+
+## References
+
+- _Information Theory, Inference, and Learning Algorithms_: http://www.inference.org.uk/itprnn/book.pdf
