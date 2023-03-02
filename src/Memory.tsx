@@ -15,18 +15,20 @@ export default function Memory({ pattern, onDelete, onEdit }: IProps) {
   const [hovered, setHovered] = useState(false)
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{
+      position: "relative", width: pixelSize*width, height: pixelSize*width, margin: '20px'
+    }}>
       <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
           position: "absolute",
           width: 20,
           height: 20,
           backgroundColor: hovered ? 'red' : "#1a1a1a",
           border: '1px solid #646cff',
-          right: -10,
-          top: -10,
+          right: -15,
+          top: -15,
           borderRadius: 50,
           color: 'white',
           cursor: 'pointer',
@@ -34,7 +36,7 @@ export default function Memory({ pattern, onDelete, onEdit }: IProps) {
         }}
         onClick={onDelete}
       >&times;</div>
-      <Bitmap width={width} pixelSize={pixelSize} pattern={pattern} onClick={onEdit}/>
+      <Bitmap width={width} pixelSize={pixelSize} pattern={pattern} onClick={onEdit} />
     </div>
   );
 }

@@ -39,7 +39,7 @@ export default function Bitmap({ pattern, pixelSize, width, onClick }: IProps) {
             ref={canvasRef}
             width={pixelSize * width}
             height={pixelSize * width}
-            style={{ border: "1px solid #646cff" }}
+            style={{ border: "1px solid #646cff", height: pixelSize*width, width: pixelSize*width, margin: 'auto 0' }}
         />
     );
 }
