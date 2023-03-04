@@ -22,8 +22,9 @@ import {
 function App() {
   const width = 6
   const neurons = width * width
-  const testPatternOne = Array.from({ length: neurons }, (_, i) => i % 5 == 0 ? 1 : -1)
-  const testPatternTwo = Array.from({ length: neurons }, (_, i) => i % 2 == 0 ? 1 : -1)
+  const testPatternOne = [1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,-1,-1,1,1,-1,1,1,1,1,-1] as Pattern
+  const testPatternTwo = [-1,-1,1,1,-1,-1,-1,1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,1,1,1,1,1,1] as Pattern
+  const initialState = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,-1,-1,1,1,-1,1,1,1,1,-1] as Pattern
   const [patterns, setPatterns] = useState<Pattern[]>([testPatternOne, testPatternTwo])
   const [weights, setWeights] = useState<number[][]>(Array.from({ length: width }, () => Array.from({ length: width }, () => 0)))
   const [isTrained, setIsTrained] = useState(false)
@@ -97,7 +98,7 @@ function App() {
             {showInstructions && <div style={{ border: '1px solid #646cff', padding: 10, position: 'absolute', left: '120%', top: 100, width: 100 }}>
               Try drawing on the network to see if it converges to a memory
             </div>}
-            <Hopfield initialState={Array.from({ length: neurons }, (x, i) => i % 4 == 0 ? 1 : -1)} weights={weights} isRunning={isRunning} />
+            <Hopfield initialState={initialState} weights={weights} isRunning={isRunning} />
             <button disabled={!isTrained} onClick={toggleRunning}>{isRunning ? 'Stop' : 'Start'}</button>
           </div>
         </div>
