@@ -116,8 +116,8 @@ function App() {
               {"x_i \\to x_i' = \\Theta \\left(\\sum_{j} w_{ij}x_j\\right)"}
             </BlockMath>
 
-            The idea of using this network to encode a memory is to
-            tune the weight matrix of the network so that when it is
+            The network encodes memories by 
+            tuning the weight matrix so that when the network is
             placed in a given state, the activity rule causes the
             state to converge on a desired memory.
             We denote the set of memories as <InlineMath>{"\\{\\mathbf{x}^{(n)}\\}"}</InlineMath>
@@ -141,6 +141,9 @@ function App() {
             The weights are optimized by using gradient descent as provided by <a href="https://tensorflow.org/js">TensorFlow.js</a>. <br />
 
             Further analysis shows that a network with <InlineMath>I</InlineMath> neurons can store approximately <InlineMath>0.138*I</InlineMath> patterns.
+          </p>
+          <p>
+          Reference: <i>Information Theory, Inference, and Learning Algorithms</i>: <a href="http://www.inference.org.uk/itprnn/book.pdf">http://www.inference.org.uk/itprnn/book.pdf</a>
           </p>
         </details>
       </div>
