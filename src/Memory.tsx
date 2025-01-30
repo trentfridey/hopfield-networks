@@ -16,7 +16,10 @@ export default function Memory({ pattern, onDelete, onEdit }: IProps) {
 
   return (
     <div style={{
-      position: "relative", width: pixelSize*width, height: pixelSize*width, margin: '20px'
+      position: "relative", 
+      width: pixelSize*width, 
+      height: pixelSize*width, 
+      margin: '20px', 
     }}>
       <div
         onMouseEnter={() => setHovered(true)}
@@ -36,7 +39,7 @@ export default function Memory({ pattern, onDelete, onEdit }: IProps) {
         }}
         onClick={onDelete}
       >&times;</div>
-      <Bitmap width={width} pixelSize={pixelSize} pattern={pattern} onClick={onEdit} />
+      <Bitmap width={width} pixelSize={pixelSize} pattern={pattern} onDraw={onEdit} />
     </div>
   );
 }

@@ -43,9 +43,9 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
+  background: linear-gradient(#646cff, #242424);
   transition: border-color 0.25s;
+  cursor: pointer;
 }
 button:hover {
   border-color: #646cff;
@@ -53,6 +53,11 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+button:disabled {
+  cursor: default;
+  background: #242424;
+  border: 1px solid #646cff
 }
 canvas {
   image-rendering: crisp-edges;

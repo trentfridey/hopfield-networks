@@ -20,12 +20,50 @@ import {
 } from './utils';
 
 function App() {
-  const width = 6
+  const width = 8
   const neurons = width * width
-  const testPatternOne = [1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,-1,-1,1,1,-1,1,1,1,1,-1] as Pattern
-  const testPatternTwo = [-1,-1,1,1,-1,-1,-1,1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,-1,-1,1,1,-1,-1,1,1,1,1,1,1] as Pattern
-  const initialState = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,-1,1,1,-1,1,1,1,-1,-1,1,1,-1,1,1,1,1,-1] as Pattern
-  const [patterns, setPatterns] = useState<Pattern[]>([testPatternOne, testPatternTwo])
+
+  const serializePattern = (pic: string[]) => {
+    return pic.flatMap(l => l.split(' ').map(c => c === '1' ? 1 : -1))
+  }
+  const pics = [
+    [
+    `0 0 1 1 1 1 0 0`,
+    `0 1 1 1 1 1 1 0`,
+    `0 1 0 1 1 0 1 0`,
+    `0 1 1 1 1 1 1 0`,
+    `0 1 1 1 1 1 1 0`,
+    `0 1 0 1 1 0 1 0`,
+    `0 1 1 0 0 1 1 0`,
+    `0 0 1 1 1 1 0 0`
+  ],
+
+   [
+    `0 0 0 0 0 0 0 0`,
+    `0 0 0 1 1 0 0 0`,
+    `0 0 1 1 1 0 0 0`,
+    `0 0 0 1 1 0 0 0`,
+    `0 0 0 1 1 0 0 0`,
+    `0 0 0 1 1 0 0 0`,
+    `0 1 1 1 1 1 1 0`,
+    `0 0 0 0 0 0 0 0`
+  ]
+  ]
+
+  const testPatterns = pics.map(p => serializePattern(p))
+  const initialState = serializePattern(
+    [
+      `0 0 0 0 0 0 0 0`,
+      `0 0 0 0 0 0 0 0`,
+      `0 1 0 1 1 0 1 0`,
+      `0 1 1 1 1 1 1 0`,
+      `0 1 1 1 1 1 1 0`,
+      `0 1 0 1 1 0 1 0`,
+      `0 1 1 0 0 1 1 0`,
+      `0 0 1 1 1 1 0 0`
+  ]
+   ) as Pattern
+  const [patterns, setPatterns] = useState<Pattern[]>(testPatterns)
   const [weights, setWeights] = useState<number[][]>(Array.from({ length: width }, () => Array.from({ length: width }, () => 0)))
   const [isTrained, setIsTrained] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
@@ -73,29 +111,29 @@ function App() {
       <h1>Hopfield Network Demo</h1>
       <div style={{ width: '100%' }}>
         <div style={{ width: '80ch', textAlign: 'left', margin: 'auto' }}>
-          This is an implementation of a <b>Hopfield network</b>, a simple (yet imperfect) model of associative memory.
-          When given a pattern, it will recall a similar pattern from its memories.
+          This is an implementation of a <b>Hopfield network</b>, a simple (yet imperfect) model of associative memory:
+          when given a pattern, it will recall a similar pattern from its memories.
 
         </div>
         <div onClick={() => setShowInstructions(false)} style={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', alignContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', position: 'relative' }}>
             <h2>Memories</h2>
-            {showInstructions && <div style={{ border: '1px solid #646cff', padding: 10, position: 'absolute', left: '-100%', top: 100, width: 100 }}>
+            {showInstructions && <div style={{ border: '1px solid #646cff', borderRadius: 6, padding: 10, position: 'absolute', left: '-100%', top: 100, width: 100 }}>
               Try drawing on one of the patterns, or add your own, and hit 'Train'
               </div>}
             {patterns?.map((pattern, i) => (
               <Memory pattern={pattern} key={i} onDelete={() => deletePattern(i)} onEdit={(pixel) => handleDraw(i, pixel)} />
             ))}
             {(patterns.length < maxPatterns) && <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ border: '1px solid #646cff', margin: 20, backgroundColor: '#1a1a1a', width: width * 16, height: width * 16 }}>
-              <div onClick={addPattern} style={{ border: '1px solid #646cff', backgroundColor: hovered ? '#aaa' : '#1a1a1a', width: width * 16, height: width * 16, color: 'white', fontSize: '48px', cursor: 'pointer' }}>
-                <div style={{ margin: 'auto' }}>+</div>
+              <div onClick={addPattern} style={{ border: '1px solid #646cff', backgroundColor: hovered ? '#646cff' : '#1a1a1a', width: width * 16, height: width * 16, color: 'white', fontSize: '12px', cursor: 'pointer', display: 'flex' }}>
+                <div style={{ margin: 'auto' }}>Add a new pattern</div>
               </div>
             </div>}
-            <button onClick={train}>Train</button>
+            <button disabled={isRunning} onClick={train}>Train</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
             <h2>Network</h2>
-            {showInstructions && <div style={{ border: '1px solid #646cff', padding: 10, position: 'absolute', left: '120%', top: 100, width: 100 }}>
+            {showInstructions && <div style={{ border: '1px solid #646cff', borderRadius: 6, padding: 10, position: 'absolute', left: '120%', top: 100, width: 100 }}>
               Try drawing on the network to see if it converges to a memory
             </div>}
             <Hopfield initialState={initialState} weights={weights} isRunning={isRunning} />

@@ -47,6 +47,7 @@ export default function Hopfield({ initialState, weights, isRunning }: IProps) {
         else clearTimeout(loopRef.current)
         return () => clearTimeout(loopRef.current)
     }, [isRunning])
-    return <Bitmap width={width} pixelSize={pixelSize} pattern={bitmap} key={key} onClick={handleDraw}/>
+
+    return <Bitmap width={width} pixelSize={pixelSize} pattern={bitmap} key={key} onDraw={handleDraw}/>
 }
 

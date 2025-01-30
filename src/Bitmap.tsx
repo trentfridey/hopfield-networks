@@ -1,6 +1,7 @@
 import {
   useEffect,
   useRef,
+  useState
 } from 'react';
 
 import {
@@ -12,10 +13,12 @@ interface IProps {
     pattern: Pattern;
     pixelSize: number;
     width: number;
-    onClick: (index: number) => void
+    onDraw: (index: number) => void
 }
 
-export default function Bitmap({ pattern, pixelSize, width, onClick }: IProps) {
+export default function Bitmap({ pattern, pixelSize, width, onDraw }: IProps) {
+    const [isDrawing, setIsDrawing] = useState(false)
+    const [mousePixel, setMousePixel] = useState(0)
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
     useEffect(() => {
@@ -25,17 +28,36 @@ export default function Bitmap({ pattern, pixelSize, width, onClick }: IProps) {
             plotPattern(ctx, pattern, pixelSize, width);
         }
     }, [pattern]);
-    const handleClick = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    const getMousePixel = (e) => {
         const rect = e.currentTarget.getBoundingClientRect()
         const x = e.clientX - rect.left
         const y = e.clientY - rect.top
         const col = Math.floor(x / pixelSize)
         const row = Math.floor(y / pixelSize)
-        onClick(row * width + col)
+        return row * width + col
+    }
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        setIsDrawing(() => true)
+        const newMousePixel = getMousePixel(e)
+        setMousePixel(() => newMousePixel)
+        onDraw(newMousePixel)
+    }
+    const handleMouseUp = () => {
+        setIsDrawing(() => false)
+    }
+    const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        const newMousePixel = getMousePixel(e)
+        if (isDrawing && mousePixel !== newMousePixel) {
+            onDraw(newMousePixel)
+        }
+        setMousePixel(newMousePixel)
     }
     return (
         <canvas
-            onClick={handleClick}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
             ref={canvasRef}
             width={pixelSize * width}
             height={pixelSize * width}
