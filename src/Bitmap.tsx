@@ -28,7 +28,7 @@ export default function Bitmap({ pattern, pixelSize, width, onDraw }: IProps) {
             plotPattern(ctx, pattern, pixelSize, width);
         }
     }, [pattern]);
-    const getMousePixel = (e) => {
+    const getMousePixel = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const rect = e.currentTarget.getBoundingClientRect()
         const x = e.clientX - rect.left
         const y = e.clientY - rect.top
